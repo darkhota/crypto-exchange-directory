@@ -3,6 +3,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.css";
 import _ from "lodash";
 import { Link } from "react-router-dom";
+import { StyledExchanges } from "../styles/exchanges.styles";
 
 // set default size of exchanges displayed per page
 const pageSize = 10;
@@ -45,28 +46,32 @@ const Exchanges = () => {
   };
 
   return (
-    <div>
+    <StyledExchanges>
       {!exchangesPerPage ? (
         "No data found"
       ) : (
-        <table className="table">
+        <table className="table responsive">
           <thead>
             <tr>
               <th>Name</th>
               <th>Country</th>
-              <th>Rank</th>
-              <th>Status</th>
+              <th>URL</th>
+              <th>Logo</th>
+              <th>Trust Rank</th>
             </tr>
           </thead>
           <tbody>
             {exchangesPerPage.map((exchange, index) => (
               <tr key={index}>
-                <Link to={`/details/${exchange.id}`}>
-                  <td>{exchange.name}</td>
-                  <td>{exchange.country}</td>
-                  <td>{exchange.trust_score}</td>
-                  <td>{exchange.url}</td>
-                </Link>
+                <td>
+                  <Link to={`/details/${exchange.id}`}>{exchange.name}</Link>
+                </td>
+                <td>{exchange.country}</td>
+                <td>{exchange.url}</td>
+                <td>
+                  <img src={exchange.image} />
+                </td>
+                <td className="center">{exchange.trust_score_rank}</td>
               </tr>
             ))}
           </tbody>
@@ -88,7 +93,7 @@ const Exchanges = () => {
           ))}
         </ul>
       </nav>
-    </div>
+    </StyledExchanges>
   );
 };
 
