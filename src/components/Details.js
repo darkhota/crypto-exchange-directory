@@ -6,18 +6,29 @@ import { StyledDetails } from "../styles/details.styles";
 const Details = props => {
   const { id } = useParams();
   const [details, setDetails] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [idty, setIdty] = useState(id);
 
   useEffect(() => {
-    axios
-      .get(`https://api.coingecko.com/api/v3/exchanges/${idty}`)
-      .then(res => {
-        setDetails(res.data);
-      });
+    const fetchDetails = async () => {
+      setLoading(true);
+      axios
+        .get(`https://api.coingecko.com/api/v3/exchanges/${idty}`)
+        .then(res => {
+          setDetails(res.data);
+        });
+      setLoading(false);
+    };
+
+    fetchDetails();
   }, []);
+
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
   return (
     <StyledDetails>
-      <div className="back">
+      <div className="back" id="container">
         <Link to="/">
           <img src="/back.jpg" alt="bk" />
         </Link>

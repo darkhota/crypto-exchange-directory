@@ -10,22 +10,28 @@ const pageSize = 10;
 
 const Exchanges = () => {
   const [exchanges, setExchanges] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [exchangesPerPage, setExchangesPerPage] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
 
   useEffect(() => {
-    axios.get("https://api.coingecko.com/api/v3/exchanges").then(res => {
-      console.log(res.data);
-      setExchanges(res.data);
+    const fetchExchanges = async () => {
+      setLoading(true);
+      axios.get("https://api.coingecko.com/api/v3/exchanges").then(res => {
+        console.log(res.data);
+        setExchanges(res.data);
 
-      //   slice data into 10 each(pageSize)
-      setExchangesPerPage(
-        _(res.data)
-          .slice(0)
-          .take(pageSize)
-          .value()
-      );
-    });
+        //   slice data into 10 each(pageSize)
+        setExchangesPerPage(
+          _(res.data)
+            .slice(0)
+            .take(pageSize)
+            .value()
+        );
+      });
+      setLoading(false);
+    };
+    fetchExchanges();
   }, []);
 
   //   calculate how many pages would be available based on fetched data and pageSize
@@ -44,13 +50,16 @@ const Exchanges = () => {
       .value();
     setExchangesPerPage(exchangesPage);
   };
+  if (loading) {
+    return <h2>Loading...</h2>;
+  }
 
   return (
     <StyledExchanges>
       {!exchangesPerPage ? (
         "No data found"
       ) : (
-        <table className="table responsive">
+        <table className="table responsive" id="container">
           <thead>
             <tr>
               <th>Name</th>
@@ -62,7 +71,7 @@ const Exchanges = () => {
           </thead>
           <tbody>
             {exchangesPerPage.map((exchange, index) => (
-              <tr key={index}>
+              <tr key={exchange.id}>
                 <td>
                   <Link to={`/details/${exchange.id}`}>{exchange.name}</Link>
                 </td>
@@ -81,10 +90,10 @@ const Exchanges = () => {
         <ul className="pagination">
           {pages.map(page => (
             <li
+              key={page}
               className={
                 page === currentPage ? "page-item active" : "page-item"
               }
-              key={page.id}
             >
               <p className="page-link" onClick={() => pagination(page)}>
                 {page}
