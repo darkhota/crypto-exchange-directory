@@ -3,7 +3,7 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import { StyledDetails } from "../styles/details.styles";
 
-const Details = props => {
+const Details = () => {
   const { id } = useParams();
   const [details, setDetails] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -67,10 +67,6 @@ const Details = props => {
         <div className="flex-group">
           <h3>Description:</h3>
           <h3>{details.description}</h3>
-        </div>
-        <div className="flex-group">
-          <h3>Name:</h3>
-          <h3>{details.name}</h3>
         </div>
       </div>
     </StyledDetails>
