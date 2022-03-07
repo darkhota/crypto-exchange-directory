@@ -55,5 +55,6 @@ export const StyledExchanges = styled.div`
     border-radius: 5px;
     padding: 0.3rem;
     padding-left: 10px;
+    border: none;
   }
 `;
