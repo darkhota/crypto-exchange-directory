@@ -37,7 +37,9 @@ export const StyledExchanges = styled.div`
   .heading {
     display: flex;
     justify-content: space-between;
+    flex-wrap: wrap;
     align-items: center;
+    margin-bottom: 1rem;
   }
 
   .table-container {

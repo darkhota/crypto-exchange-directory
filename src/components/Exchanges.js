@@ -76,8 +76,8 @@ const Exchanges = () => {
       {!exchangesPerPage ? (
         "No data found"
       ) : (
-        <div className="table-container">
-          <table className="table responsive" id="container">
+        <div className="table-container table-responsive">
+          <table className="table" id="container">
             <thead>
               <tr className="table-light">
                 <th>Name</th>
