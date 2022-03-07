@@ -13,6 +13,7 @@ const Exchanges = () => {
   const [loading, setLoading] = useState(false);
   const [exchangesPerPage, setExchangesPerPage] = useState([]);
   const [currentPage, setcurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
     const fetchExchanges = async () => {
@@ -56,37 +57,71 @@ const Exchanges = () => {
 
   return (
     <StyledExchanges>
+      <div className="heading">
+        <div className="text">
+          <h3>Crypto Exchange directory</h3>
+          <p> A list of various crypto exchanges from coingecko</p>
+        </div>
+
+        <div className="search">
+          <input
+            type="text"
+            placeholder="Search..."
+            onChange={event => {
+              setSearchTerm(event.target.value);
+            }}
+          />
+        </div>
+      </div>
       {!exchangesPerPage ? (
         "No data found"
       ) : (
-        <table className="table responsive" id="container">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Country</th>
-              <th>URL</th>
-              <th>Logo</th>
-              <th>Trust Rank</th>
-            </tr>
-          </thead>
-          <tbody>
-            {exchangesPerPage.map((exchange, index) => (
-              <tr key={exchange.id}>
-                <td>
-                  <Link to={`/details/${exchange.id}`}>{exchange.name}</Link>
-                </td>
-                <td>{exchange.country}</td>
-                <td>{exchange.url}</td>
-                <td>
-                  <img src={exchange.image} />
-                </td>
-                <td className="center">{exchange.trust_score_rank}</td>
+        <div className="table-container">
+          <table className="table responsive" id="container">
+            <thead>
+              <tr className="table-light">
+                <th>Name</th>
+                <th>Country</th>
+                <th>URL</th>
+                <th>Logo</th>
+                <th>Trust Rank</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {exchangesPerPage
+                .filter(exchange => {
+                  if (searchTerm == "") {
+                    return exchange;
+                  } else if (
+                    exchange.name
+                      .toLowerCase()
+                      .includes(searchTerm.toLowerCase())
+                  ) {
+                    return exchange;
+                  }
+                })
+                .map((exchange, index) => (
+                  <tr key={exchange.id}>
+                    <td className="table-dark">
+                      <Link to={`/details/${exchange.id}`}>
+                        {exchange.name}
+                      </Link>
+                    </td>
+                    <td className="table-dark">{exchange.country}</td>
+                    <td className="table-dark">{exchange.url}</td>
+                    <td className="table-dark">
+                      <img className="logo-img" src={exchange.image} />
+                    </td>
+                    <td className="center table-dark">
+                      {exchange.trust_score_rank}
+                    </td>
+                  </tr>
+                ))}
+            </tbody>
+          </table>
+        </div>
       )}
-      <nav className="d-flex justify-content-center">
+      <nav className="d-flex justify-content-center mt-4">
         <ul className="pagination">
           {pages.map(page => (
             <li

@@ -6,6 +6,20 @@ display: flex;
 align-items:; center;
 justify-content: center;
 flex-direction: column;
+background-color: #000;
+color: #fff;
+
+a {
+    color: #fff;
+}
+
+svg{
+    height: 40px;
+}
+
+svg:hover{
+    color: #ffff3
+}
 
 .header{
     display: flex;
@@ -20,6 +34,7 @@ flex-direction: column;
 .header img{
     width: 35px;
     object-fit: cover;
+    border-radius: 50%;
 }
 
 .content{
@@ -56,6 +71,10 @@ flex-direction: column;
 
 .back img{
     width: 40px;
+}
+
+.logo-img{
+    border-radius: 50%;
 }
 
 @media (min-width: 768px) {
